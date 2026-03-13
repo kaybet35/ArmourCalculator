@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armour Calculator</title>
+    <style>
+        body {
+            font-family: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            color: #333;
+        }
+        .card {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .slot { margin-bottom: 15px; }
+        .select-group { display: flex; gap: 10px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: #666; }
+        select {
+            width: 100%;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .tier-select { width: 40%; }
+        .result-container {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eef2f7;
+            border-radius: 8px;
+            text-align: center;
+        }
+        #total-mitigation {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #27ae60;
+            display: block;
+        }
+        #effective-health {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2980b9;
+            display: block;
+            margin-top: 5px;
+        }
+        .cost-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fffdf0;
+            border: 1px solid #f1e6b2;
+            border-radius: 8px;
+        }
+        .cost-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+        .cost-list li {
+            padding: 3px 0;
+            border-bottom: 1px dotted #ccc;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2><center>Armour Calculator</center></h2>
+    
+    <div class="slot">
+        <label>Chest Clothing</label>
+        <div class="select-group">
+            <select class="armor-slot">
+                <option value="common_garment" data-mitigation="4">Common Garment (4%)</option>
+                <option value="none" data-mitigation="0">None (0%)</option>
+            </select>
+            <select class="tier-select">
+                <option value="1">Tier 0</option>
+                <option value="1.1">Tier 1</option>
+                <option value="1.2">Tier 2</option>
+                <option value="1.3">Tier 3</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="slot">
+        <label>Leg Clothing</label>
+        <div class="select-group">
+            <select class="armor-slot">
+                <option value="common_bottoms" data-mitigation="2">Common Bottoms (2%)</option>
+                <option value="none" data-mitigation="0">None (0%)</option>
+            </select>
+            <select class="tier-select">
+                <option value="1">Tier 0</option>
+                <option value="1.1">Tier 1</option>
+                <option value="1.2">Tier 2</option>
+                <option value="1.3">Tier 3</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="slot">
+        <label>Helmet</label>
+        <div class="select-group">
+            <select class="armor-slot">
+                <option value="heavy_helmet" data-mitigation="16">Heavy Helmet (16%)</option>
+                <option value="reinforced_helmet" data-mitigation="13">Reinforced Helmet (13%)</option>
+                <option value="light_helmet" data-mitigation="6">Light Helmet (6%)</option>
+                <option value="auxiliary_helmet" data-mitigation="4">Auxiliary Helmet (4%)</option>
+                <option value="none" data-mitigation="0">None (0%)</option>
+            </select>
+            <select class="tier-select">
+                <option value="1">Tier 0</option>
+                <option value="1.1">Tier 1</option>
+                <option value="1.2">Tier 2</option>
+                <option value="1.3">Tier 3</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="slot">
+        <label>Chest Armour</label>
+        <div class="select-group">
+            <select class="armor-slot">
+                <option value="heavy_chest" data-mitigation="64">Heavy Chest Armour (64%)</option>
+                <option value="reinforced_chest" data-mitigation="58">Reinforced Chest Armour (58%)</option>
+                <option value="light_chest" data-mitigation="24">Light Chest Armour (24%)</option>
+                <option value="auxiliary_chest" data-mitigation="11">Auxiliary Chest Armour (11%)</option>
+                <option value="none" data-mitigation="0">None (0%)</option>
+            </select>
+            <select class="tier-select">
+                <option value="1">Tier 0</option>
+                <option value="1.1">Tier 1</option>
+                <option value="1.2">Tier 2</option>
+                <option value="1.3">Tier 3</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="slot">
+        <label>Leg Armour</label>
+        <div class="select-group">
+            <select class="armor-slot">
+                <option value="heavy_leg" data-mitigation="10">Heavy Leg Armour (10%)</option>
+                <option value="reinforced_leg" data-mitigation="8">Reinforced Leg Armour (8%)</option>
+                <option value="light_leg" data-mitigation="4">Light Leg Armour (4%)</option>
+                <option value="auxiliary_leg" data-mitigation="1">Auxiliary Leg Armour (1%)</option>
+                <option value="none" data-mitigation="0">None (0%)</option>
+            </select>
+            <select class="tier-select">
+                <option value="1">Tier 0</option>
+                <option value="1.1">Tier 1</option>
+                <option value="1.2">Tier 2</option>
+                <option value="1.3">Tier 3</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="result-container">
+        <label>Total Mitigation</label>
+        <span id="total-mitigation">0%</span>
+        
+        <label style="margin-top:15px;">Effective Health</label>
+        <span id="effective-health">100</span>
+    </div>
+
+    <div class="cost-section">
+        <label>Total Crafting Cost</label>
+        <ul id="material-list" class="cost-list"></ul>
+    </div>
+</div>
+
+<script>
+    const itemCosts = {
+        common_garment: { "Linen": 2, "Fibre": 3 },
+        common_bottoms: { "Linen": 1, "Fibre": 1 },
+        heavy_helmet: { "Fire Clay": 2, "Rare Metals": 3, "Linen": 1, "Tanned Thick Leather": 1, "Iron Armour Plating": 1 },
+        reinforced_helmet: { "Fibre": 2, "Iron Armour Plating": 1, "Thick Leather": 2 },
+        light_helmet: { "Fibre": 2, "Bronze Armour Plating": 1, "Thin Leather": 2 },
+        auxiliary_helmet: {},
+        heavy_chest: { "Fire Clay": 5, "Rare Metals": 6, "Linen": 1, "Tanned Thick Leather": 2, "Iron Armour Plating": 2 },
+        reinforced_chest: { "Fibre": 3, "Iron Armour Plating": 2, "Thick Leather": 3 },
+        light_chest: { "Fibre": 3, "Bronze Armour Plating": 2, "Thin Leather": 3 },
+        auxiliary_chest: {},
+        heavy_leg: { "Fire Clay": 2, "Rare Metals": 3, "Linen": 1, "Tanned Thick Leather": 1, "Iron Armour Plating": 1 },
+        reinforced_leg: { "Fibre": 2, "Iron Armour Plating": 1, "Thick Leather": 2 },
+        light_leg: { "Fibre": 2, "Bronze Armour Plating": 1, "Thin Leather": 2 },
+        auxiliary_leg: {},
+        none: {}
+    };
+
+    const slots = document.querySelectorAll('.slot');
+    const mitigationDisplay = document.getElementById('total-mitigation');
+    const ehpDisplay = document.getElementById('effective-health');
+    const materialList = document.getElementById('material-list');
+
+    function updateAll() {
+        let damageTakenMult = 1.0;
+        let totalMaterials = {};
+
+        slots.forEach(slot => {
+            const armorSelect = slot.querySelector('.armor-slot');
+            const tierSelect = slot.querySelector('.tier-select');
+            
+            if (!armorSelect) return;
+
+            const selectedOption = armorSelect.options[armorSelect.selectedIndex];
+            const tierMult = parseFloat(tierSelect.value);
+            
+            // Mitigation Logic: (Base Mitigation * Tier Multiplier)
+            const baseMit = parseFloat(selectedOption.getAttribute('data-mitigation')) / 100;
+            const finalMitValue = baseMit * tierMult;
+            damageTakenMult *= (1 - finalMitValue);
+
+            // Cost Logic
+            const itemKey = armorSelect.value;
+            const costs = itemCosts[itemKey];
+            for (let mat in costs) {
+                totalMaterials[mat] = (totalMaterials[mat] || 0) + costs[mat];
+            }
+        });
+
+        // Update Mitigation & EHP
+        const totalMitigation = (1 - damageTakenMult) * 100;
+        const effectiveHealth = 100 / damageTakenMult;
+        
+        mitigationDisplay.textContent = totalMitigation.toFixed(2) + '%';
+        ehpDisplay.textContent = effectiveHealth.toFixed(1);
+
+        // Update Materials List
+        materialList.innerHTML = '';
+        const keys = Object.keys(totalMaterials);
+        if (keys.length === 0) {
+            materialList.innerHTML = '<li><span>Free</span></li>';
+        } else {
+            keys.forEach(mat => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${mat}</span> <b>x${totalMaterials[mat]}</b>`;
+                materialList.appendChild(li);
+            });
+        }
+    }
+
+    document.querySelectorAll('select').forEach(select => select.addEventListener('change', updateAll));
+    updateAll();
+</script>
+
+</body>
+</html>
