@@ -7,30 +7,34 @@
     <style>
         body {
             font-family: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #121212;
             display: flex;
             justify-content: center;
             padding: 10px;
-            color: #333;
+            color: #e0e0e0;
+            transition: background 0.3s;
         }
         .card {
-            background: white;
+            background: #1e1e1e;
             padding: 1rem;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             width: 100%;
             max-width: 450px;
+            border: 1px solid #333;
+            position: relative;
         }
-        h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { margin-top: 0; color: #ffffff; border-bottom: 2px solid #333; padding-bottom: 10px; }
         .slot { margin-bottom: 15px; }
         .select-group { display: flex; gap: 10px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: #666; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: #bbb; }
         select {
             width: 100%;
             padding: 6px;
             border-radius: 6px;
-            border: 1px solid #ddd;
-            background-color: #fff;
+            border: 1px solid #444;
+            background-color: #2a2a2a;
+            color: #fff;
             font-size: 1rem;
             cursor: pointer;
         }
@@ -38,28 +42,28 @@
         .result-container {
             margin-top: 15px;
             padding: 10px;
-            background: #eef2f7;
+            background: #252a30;
             border-radius: 8px;
             text-align: center;
         }
         #total-mitigation {
             font-size: 1.5rem;
             font-weight: 800;
-            color: #27ae60;
+            color: #2ecc71;
             display: block;
         }
         #effective-health {
             font-size: 1.3rem;
             font-weight: 700;
-            color: #2980b9;
+            color: #3498db;
             display: block;
             margin-top: 5px;
         }
         .cost-section {
             margin-top: 20px;
             padding: 15px;
-            background: #fffdf0;
-            border: 1px solid #f1e6b2;
+            background: #25231a;
+            border: 1px solid #443f2a;
             border-radius: 8px;
         }
         .cost-list {
@@ -71,15 +75,41 @@
         }
         .cost-list li {
             padding: 3px 0;
-            border-bottom: 1px dotted #ccc;
+            border-bottom: 1px dotted #444;
             display: flex;
             justify-content: space-between;
         }
+	
+        /* Theme Toggle Button */
+        #theme-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #fff;
+        }
+	
+        /* Light Mode Overrides */
+        body.light-mode { background-color: #f4f4f9; color: #333; }
+        body.light-mode .card { background: white; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        body.light-mode h2 { color: #2c3e50; border-bottom: 2px solid #eee; }
+        body.light-mode label { color: #666; }
+        body.light-mode select { background-color: #fff; border: 1px solid #ddd; color: #333; }
+        body.light-mode .result-container { background: #eef2f7; }
+        body.light-mode .cost-section { background: #fffdf0; border: 1px solid #f1e6b2; }
+        body.light-mode .cost-list li { border-bottom: 1px dotted #ccc; }
+        body.light-mode #theme-toggle { background: #eee; color: #333; border: 1px solid #ccc; }
     </style>
 </head>
 <body>
 
 <div class="card">
+    <button id="theme-toggle">Light Mode</button>
     <h2><center>Armour Calculator</center></h2>
     
     <div class="slot">
@@ -208,6 +238,13 @@
     const mitigationDisplay = document.getElementById('total-mitigation');
     const ehpDisplay = document.getElementById('effective-health');
     const materialList = document.getElementById('material-list');
+    const themeBtn = document.getElementById('theme-toggle');
+
+    // Theme Toggle Logic
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        themeBtn.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
+    });
 
     function updateAll() {
         let damageTakenMult = 1.0;
