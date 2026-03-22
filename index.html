@@ -4,298 +4,209 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Armour Calculator</title>
-    <style>
-        body {
-            font-family: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #121212;
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-            color: #e0e0e0;
-            transition: background 0.3s;
-        }
-        .card {
-            background: #1e1e1e;
-            padding: 1rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 450px;
-            border: 1px solid #333;
-            position: relative;
-        }
-        h2 { margin-top: 0; color: #ffffff; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .slot { margin-bottom: 15px; }
-        .select-group { display: flex; gap: 10px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: #bbb; }
-        select {
-            width: 100%;
-            padding: 6px;
-            border-radius: 6px;
-            border: 1px solid #444;
-            background-color: #2a2a2a;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        .tier-select { width: 40%; }
-        .result-container {
-            margin-top: 15px;
-            padding: 10px;
-            background: #252a30;
-            border-radius: 8px;
-            text-align: center;
-        }
-        #total-mitigation {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #2ecc71;
-            display: block;
-        }
-        #effective-health {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #3498db;
-            display: block;
-            margin-top: 5px;
-        }
-        .cost-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: #25231a;
-            border: 1px solid #443f2a;
-            border-radius: 8px;
-        }
-        .cost-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-        .cost-list li {
-            padding: 3px 0;
-            border-bottom: 1px dotted #444;
-            display: flex;
-            justify-content: space-between;
-        }
-	
-        /* Theme Toggle Button */
-        #theme-toggle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 5px 10px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background: #2a2a2a;
-            color: #fff;
-        }
-	
-        /* Light Mode Overrides */
-        body.light-mode { background-color: #f4f4f9; color: #333; }
-        body.light-mode .card { background: white; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        body.light-mode h2 { color: #2c3e50; border-bottom: 2px solid #eee; }
-        body.light-mode label { color: #666; }
-        body.light-mode select { background-color: #fff; border: 1px solid #ddd; color: #333; }
-        body.light-mode .result-container { background: #eef2f7; }
-        body.light-mode .cost-section { background: #fffdf0; border: 1px solid #f1e6b2; }
-        body.light-mode .cost-list li { border-bottom: 1px dotted #ccc; }
-        body.light-mode #theme-toggle { background: #eee; color: #333; border: 1px solid #ccc; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="card">
-    <button id="theme-toggle">Light Mode</button>
-    <h2><center>Armour Calculator</center></h2>
-    
-    <div class="slot">
-        <label>Chest Clothing</label>
-        <div class="select-group">
-            <select class="armor-slot">
-                <option value="none" data-mitigation="0">None (0%)</option>
-                <option value="common_garment" data-mitigation="4">Common Garment (4%)</option>
-            </select>
-            <select class="tier-select">
-                <option value="1">Tier 0</option>
-                <option value="1.1">Tier 1</option>
-                <option value="1.2">Tier 2</option>
-                <option value="1.3">Tier 3</option>
-            </select>
-        </div>
+
+    <div class="top-controls">
+        <button id="alliance-toggle">Ancient</button>
     </div>
 
-    <div class="slot">
-        <label>Leg Clothing</label>
-        <div class="select-group">
-            <select class="armor-slot">
-                <option value="none" data-mitigation="0">None (0%)</option>
-                <option value="common_bottoms" data-mitigation="2">Common Bottoms (2%)</option>
-            </select>
-            <select class="tier-select">
-                <option value="1">Tier 0</option>
-                <option value="1.1">Tier 1</option>
-                <option value="1.2">Tier 2</option>
-                <option value="1.3">Tier 3</option>
-            </select>
-        </div>
-    </div>
+    <h2>Armour Calculator</h2>
 
-    <div class="slot">
-        <label>Helmet</label>
-        <div class="select-group">
-            <select class="armor-slot">
-                <option value="none" data-mitigation="0">None (0%)</option>
-                <option value="auxiliary_helmet" data-mitigation="4">Auxiliary Helmet (4%)</option>
-                <option value="light_helmet" data-mitigation="6">Light Helmet (6%)</option>
-                <option value="reinforced_helmet" data-mitigation="13">Reinforced Helmet (13%)</option>
-                <option value="heavy_helmet" data-mitigation="16">Heavy Helmet (16%)</option>
-            </select>
-            <select class="tier-select">
-                <option value="1">Tier 0</option>
-                <option value="1.1">Tier 1</option>
-                <option value="1.2">Tier 2</option>
-                <option value="1.3">Tier 3</option>
-            </select>
-        </div>
-    </div>
+    <div class="main-content">
 
-    <div class="slot">
-        <label>Chest Armour</label>
-        <div class="select-group">
-            <select class="armor-slot">
-                <option value="none" data-mitigation="0">None (0%)</option>
-                <option value="auxiliary_chest" data-mitigation="11">Auxiliary Chest Armour (11%)</option>
-                <option value="light_chest" data-mitigation="24">Light Chest Armour (24%)</option>
-                <option value="reinforced_chest" data-mitigation="58">Reinforced Chest Armour (58%)</option>
-                <option value="heavy_chest" data-mitigation="64">Heavy Chest Armour (64%)</option>
-            </select>
-            <select class="tier-select">
-                <option value="1">Tier 0</option>
-                <option value="1.1">Tier 1</option>
-                <option value="1.2">Tier 2</option>
-                <option value="1.3">Tier 3</option>
-            </select>
-        </div>
-    </div>
+        <!-- ── LEFT COLUMN: Slot selectors ─────────────────── -->
+        <div class="controls-column">
 
-    <div class="slot">
-        <label>Leg Armour</label>
-        <div class="select-group">
-            <select class="armor-slot">
-                <option value="none" data-mitigation="0">None (0%)</option>
-                <option value="auxiliary_leg" data-mitigation="1">Auxiliary Leg Armour (1%)</option>
-                <option value="light_leg" data-mitigation="4">Light Leg Armour (4%)</option>
-                <option value="reinforced_leg" data-mitigation="8">Reinforced Leg Armour (8%)</option>
-                <option value="heavy_leg" data-mitigation="10">Heavy Leg Armour (10%)</option>
-            </select>
-            <select class="tier-select">
-                <option value="1">Tier 0</option>
-                <option value="1.1">Tier 1</option>
-                <option value="1.2">Tier 2</option>
-                <option value="1.3">Tier 3</option>
-            </select>
-        </div>
-    </div>
+            <!-- Saved Loadouts -->
+            <div class="loadout-section">
+                <label>Saved Loadouts</label>
+                <div class="loadout-controls">
+                    <input
+                        type="text"
+                        id="loadout-name"
+                        class="loadout-input"
+                        placeholder="Loadout Name..."
+                    >
+                    <button id="save-loadout" class="btn btn-save">Save</button>
+                </div>
+                <div id="loadout-list" class="loadout-list"></div>
+            </div>
 
-    <div class="result-container">
-        <label>Total Mitigation</label>
-        <span id="total-mitigation">0%</span>
-        
-        <label style="margin-top:15px;">Effective Health</label>
-        <span id="effective-health">100</span>
-    </div>
+            <!-- Chest Clothing -->
+            <div class="slot" data-slot-id="chest-clothing">
+                <label>Chest Clothing</label>
+                <div class="icon-row armor-icons">
+                    <div class="icon-item active" data-value="none" data-mit="0" data-stab="0">
+                        <span class="none-icon">∅</span>
+                    </div>
+                    <div class="icon-item" data-value="common_garment" data-mit="4" data-stab="2">
+                        <img src="IconClothingBody001_A_M.png" title="Common Garment">
+                    </div>
+                </div>
+                <div class="tier-row tier-icons">
+                    <div class="tier-item active" data-tier="1"><span class="tier-0-text">0</span></div>
+                    <div class="tier-item" data-tier="1.1"><img src="ItemQualityLow.png"    title="Tier 1"></div>
+                    <div class="tier-item" data-tier="1.2"><img src="ItemQualityMedium.png" title="Tier 2"></div>
+                    <div class="tier-item" data-tier="1.3"><img src="ItemQualityHigh.png"   title="Tier 3"></div>
+                </div>
+            </div>
 
-    <div class="cost-section">
-        <label>Total Crafting Cost</label>
-        <ul id="material-list" class="cost-list"></ul>
-    </div>
-</div>
+            <!-- Leg Clothing -->
+            <div class="slot" data-slot-id="leg-clothing">
+                <label>Leg Clothing</label>
+                <div class="icon-row armor-icons">
+                    <div class="icon-item active" data-value="none" data-mit="0" data-stab="0">
+                        <span class="none-icon">∅</span>
+                    </div>
+                    <div class="icon-item" data-value="common_bottoms" data-mit="2" data-stab="1">
+                        <img src="IconClothingLeg001_A_M.png" title="Common Bottoms">
+                    </div>
+                </div>
+                <div class="tier-row tier-icons">
+                    <div class="tier-item active" data-tier="1"><span class="tier-0-text">0</span></div>
+                    <div class="tier-item" data-tier="1.1"><img src="ItemQualityLow.png"    title="Tier 1"></div>
+                    <div class="tier-item" data-tier="1.2"><img src="ItemQualityMedium.png" title="Tier 2"></div>
+                    <div class="tier-item" data-tier="1.3"><img src="ItemQualityHigh.png"   title="Tier 3"></div>
+                </div>
+            </div>
 
-<script>
-    const itemCosts = {
-        common_garment: { "Linen": 2, "Fibre": 3 },
-        common_bottoms: { "Linen": 1, "Fibre": 1 },
-        heavy_helmet: { "Fire Clay": 2, "Rare Metals": 3, "Linen": 1, "Tanned Thick Leather": 1, "Iron Armour Plating": 1 },
-        reinforced_helmet: { "Fibre": 2, "Iron Armour Plating": 1, "Thick Leather": 2 },
-        light_helmet: { "Fibre": 2, "Bronze Armour Plating": 1, "Thin Leather": 2 },
-        auxiliary_helmet: {},
-        heavy_chest: { "Fire Clay": 5, "Rare Metals": 6, "Linen": 1, "Tanned Thick Leather": 2, "Iron Armour Plating": 2 },
-        reinforced_chest: { "Fibre": 3, "Iron Armour Plating": 2, "Thick Leather": 3 },
-        light_chest: { "Fibre": 3, "Bronze Armour Plating": 2, "Thin Leather": 3 },
-        auxiliary_chest: {},
-        heavy_leg: { "Fire Clay": 2, "Rare Metals": 3, "Linen": 1, "Tanned Thick Leather": 1, "Iron Armour Plating": 1 },
-        reinforced_leg: { "Fibre": 2, "Iron Armour Plating": 1, "Thick Leather": 2 },
-        light_leg: { "Fibre": 2, "Bronze Armour Plating": 1, "Thin Leather": 2 },
-        auxiliary_leg: {},
-        none: {}
-    };
+            <!-- Helmet -->
+            <div class="slot" data-slot-id="helmet">
+                <label>Helmet</label>
+                <div class="icon-row armor-icons">
+                    <div class="icon-item active" data-value="none" data-mit="0" data-stab="0">
+                        <span class="none-icon">∅</span>
+                    </div>
+                    <div class="icon-item" data-value="auxiliary_helmet" data-mit="4" data-stab="0">
+                        <img src="IconAuxArmourHead001_A.png" title="Auxiliary">
+                    </div>
+                    <div class="icon-item" data-value="light_helmet" data-mit="6" data-stab="3">
+                        <img src="IconLightArmourHead001_A.png" title="Light">
+                    </div>
+                    <div class="icon-item" data-value="reinforced_helmet" data-mit="13" data-stab="9">
+                        <img src="IconMediumArmourHead001_A.png" title="Reinforced">
+                    </div>
+                    <div class="icon-item" data-value="heavy_helmet" data-mit="16" data-stab="11">
+                        <img src="IconHeavyArmourHead001_A.png" title="Heavy">
+                    </div>
+                </div>
+                <div class="tier-row tier-icons">
+                    <div class="tier-item active" data-tier="1"><span class="tier-0-text">0</span></div>
+                    <div class="tier-item" data-tier="1.1"><img src="ItemQualityLow.png"    title="Tier 1"></div>
+                    <div class="tier-item" data-tier="1.2"><img src="ItemQualityMedium.png" title="Tier 2"></div>
+                    <div class="tier-item" data-tier="1.3"><img src="ItemQualityHigh.png"   title="Tier 3"></div>
+                </div>
+            </div>
 
-    const slots = document.querySelectorAll('.slot');
-    const mitigationDisplay = document.getElementById('total-mitigation');
-    const ehpDisplay = document.getElementById('effective-health');
-    const materialList = document.getElementById('material-list');
-    const themeBtn = document.getElementById('theme-toggle');
+            <!-- Chest Armour -->
+            <div class="slot" data-slot-id="chest-armor">
+                <label>Chest Armour</label>
+                <div class="icon-row armor-icons">
+                    <div class="icon-item active" data-value="none" data-mit="0" data-stab="0">
+                        <span class="none-icon">∅</span>
+                    </div>
+                    <div class="icon-item" data-value="auxiliary_chest" data-mit="11" data-stab="0">
+                        <img src="IconAuxArmourBody001_A.png" title="Auxiliary">
+                    </div>
+                    <div class="icon-item" data-value="light_chest" data-mit="24" data-stab="12">
+                        <img src="IconLightArmourBody001_A.png" title="Light">
+                    </div>
+                    <div class="icon-item" data-value="reinforced_chest" data-mit="58" data-stab="32">
+                        <img src="IconMediumArmourBody001_A.png" title="Reinforced">
+                    </div>
+                    <div class="icon-item" data-value="heavy_chest" data-mit="64" data-stab="35">
+                        <img src="IconHeavyArmourBody001_A.png" title="Heavy">
+                    </div>
+                </div>
+                <div class="tier-row tier-icons">
+                    <div class="tier-item active" data-tier="1"><span class="tier-0-text">0</span></div>
+                    <div class="tier-item" data-tier="1.1"><img src="ItemQualityLow.png"    title="Tier 1"></div>
+                    <div class="tier-item" data-tier="1.2"><img src="ItemQualityMedium.png" title="Tier 2"></div>
+                    <div class="tier-item" data-tier="1.3"><img src="ItemQualityHigh.png"   title="Tier 3"></div>
+                </div>
+            </div>
 
-    // Theme Toggle Logic
-    themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        themeBtn.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
-    });
+            <!-- Leg Armour -->
+            <div class="slot" data-slot-id="leg-armor">
+                <label>Leg Armour</label>
+                <div class="icon-row armor-icons">
+                    <div class="icon-item active" data-value="none" data-mit="0" data-stab="0">
+                        <span class="none-icon">∅</span>
+                    </div>
+                    <div class="icon-item" data-value="auxiliary_leg" data-mit="1" data-stab="0">
+                        <img src="IconAuxArmourLeg001_A.png" title="Auxiliary">
+                    </div>
+                    <div class="icon-item" data-value="light_leg" data-mit="4" data-stab="2">
+                        <img src="IconLightArmourLeg001_A.png" title="Light">
+                    </div>
+                    <div class="icon-item" data-value="reinforced_leg" data-mit="8" data-stab="7">
+                        <img src="IconMediumArmourLeg001_A.png" title="Reinforced">
+                    </div>
+                    <div class="icon-item" data-value="heavy_leg" data-mit="10" data-stab="8">
+                        <img src="IconHeavyArmourLeg001_A.png" title="Heavy">
+                    </div>
+                </div>
+                <div class="tier-row tier-icons">
+                    <div class="tier-item active" data-tier="1"><span class="tier-0-text">0</span></div>
+                    <div class="tier-item" data-tier="1.1"><img src="ItemQualityLow.png"    title="Tier 1"></div>
+                    <div class="tier-item" data-tier="1.2"><img src="ItemQualityMedium.png" title="Tier 2"></div>
+                    <div class="tier-item" data-tier="1.3"><img src="ItemQualityHigh.png"   title="Tier 3"></div>
+                </div>
+            </div>
 
-    function updateAll() {
-        let damageTakenMult = 1.0;
-        let totalMaterials = {};
+        </div><!-- /controls-column -->
 
-        slots.forEach(slot => {
-            const armorSelect = slot.querySelector('.armor-slot');
-            const tierSelect = slot.querySelector('.tier-select');
-            
-            if (!armorSelect) return;
+        <!-- ── RIGHT COLUMN: Results & costs ───────────────── -->
+        <div class="results-column">
 
-            const selectedOption = armorSelect.options[armorSelect.selectedIndex];
-            const tierMult = parseFloat(tierSelect.value);
-            
-            // Mitigation Logic: (Base Mitigation * Tier Multiplier)
-            const baseMit = parseFloat(selectedOption.getAttribute('data-mitigation')) / 100;
-            const finalMitValue = baseMit * tierMult;
-            damageTakenMult *= (1 - finalMitValue);
+            <!-- Stats grid -->
+            <div class="result-container">
+                <div class="result-item">
+                    <label>Damage Mitigation</label>
+                    <div>
+                        <span id="total-armour-mitigation">0%</span>
+                        <span id="delta-mitigation" class="delta"></span>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <label>Effective Health</label>
+                    <div>
+                        <span id="effective-health">100</span>
+                        <span id="delta-ehp" class="delta"></span>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <label>Stability Mitigation</label>
+                    <div>
+                        <span id="total-stability-mitigation">0%</span>
+                        <span id="delta-stability" class="delta"></span>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <label>Effective Stability</label>
+                    <div>
+                        <span id="effective-stability">100</span>
+                        <span id="delta-est" class="delta"></span>
+                    </div>
+                </div>
+            </div>
 
-            // Cost Logic
-            const itemKey = armorSelect.value;
-            const costs = itemCosts[itemKey];
-            for (let mat in costs) {
-                totalMaterials[mat] = (totalMaterials[mat] || 0) + costs[mat];
-            }
-        });
+            <!-- Crafting cost breakdown -->
+            <div class="cost-section">
+                <label>Total Crafting Cost</label>
+                <ul id="material-list" class="cost-list"></ul>
+            </div>
 
-        // Update Mitigation & EHP
-        const totalMitigation = (1 - damageTakenMult) * 100;
-        const effectiveHealth = 100 / damageTakenMult;
-        
-        mitigationDisplay.textContent = totalMitigation.toFixed(2) + '%';
-        ehpDisplay.textContent = effectiveHealth.toFixed(1);
+        </div><!-- /results-column -->
 
-        // Update Materials List
-        materialList.innerHTML = '';
-        const keys = Object.keys(totalMaterials);
-        if (keys.length === 0) {
-            materialList.innerHTML = '<li><span>Free</span></li>';
-        } else {
-            keys.forEach(mat => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span>${mat}</span> <b>x${totalMaterials[mat]}</b>`;
-                materialList.appendChild(li);
-            });
-        }
-    }
+    </div><!-- /main-content -->
 
-    document.querySelectorAll('select').forEach(select => select.addEventListener('change', updateAll));
-    updateAll();
-</script>
+</div><!-- /card -->
 
+<script src="script.js"></script>
 </body>
 </html>
